@@ -52,7 +52,7 @@ export default function ContractAddress() {
         value={contractAddressName}
         onChange={handleInputContractAddressNameChange}
       />
-      <Button onClick={saveContractAddress}>Save contract address</Button>
+      <Button className="w-fit" onClick={saveContractAddress}>Save contract address</Button>
       <h2>Current Contract Addresses</h2>
       <div className="flex flex-row gap-4"> 
         {

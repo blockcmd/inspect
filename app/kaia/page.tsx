@@ -41,6 +41,7 @@ export default function Page() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+      <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">ABI</h2>
       <AbiStorage />
       <ContractAddress />
       {abi && <FunctionDashboard abi={abi} />}
