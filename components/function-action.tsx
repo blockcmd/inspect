@@ -26,7 +26,6 @@ export default function FunctionAction({ functionObjects }: { functionObjects: a
   const functionIndex = searchParams.get("functionIndex");
   const contractAddress = searchParams.get("contractAddress");
   const [abi, setAbi] = useState<any>([]);
-  const [fetch, setFetch] = useState<boolean>(false);
   const [result, setResult] = useState<any>("n/a");
   const [args, setArgs] = useState<any>([]);
 
@@ -50,17 +49,8 @@ export default function FunctionAction({ functionObjects }: { functionObjects: a
     address: contractAddress as `0x${string}`,
     abi: abi,
     functionName: functionName,
-    query: {
-      enabled: fetch,
-    },
     args: args,
   });
-
-  useEffect(() => {
-    if (readSuccess) {
-      setFetch(false);
-    }
-  }, [readSuccess]);
 
   // useContractWrite hook to write data to the contract
   const {
@@ -69,33 +59,12 @@ export default function FunctionAction({ functionObjects }: { functionObjects: a
     writeContract,
   } = useWriteContract();
 
-  // async function submit(e: React.FormEvent<HTMLFormElement>) {
-  //   e.preventDefault();
-  //   writeContract({
-  //     address: "0xfbafe784a4ee4fb559636cec7f760158ea90f86f",
-  //     abi: abi,
-  //     functionName: functionName as
-  //       | "approve"
-  //       | "burn"
-  //       | "burnFrom"
-  //       | "mint"
-  //       | "pause"
-  //       | "renounceOwnership"
-  //       | "transfer"
-  //       | "transferFrom"
-  //       | "transferOwnership"
-  //       | "unpause",
-  //     args: args,
-  //   });
-  // }
-
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash: writeData,
     });
 
   function clearData() {
-    setFetch(false);
     setArgs([]);
   }
 
@@ -134,7 +103,6 @@ export default function FunctionAction({ functionObjects }: { functionObjects: a
                 <div className="flex flex-col gap-4">
                   <p>No inputs required</p>
                   <Button
-                    onClick={() => setFetch(true)}
                     className="w-fit font-mono"
                   >
                     Read
@@ -165,7 +133,6 @@ export default function FunctionAction({ functionObjects }: { functionObjects: a
                     )
                   )}
                   <Button
-                    onClick={() => setFetch(true)}
                     className="w-fit font-mono"
                   >
                     Read

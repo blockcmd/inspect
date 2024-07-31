@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "./ui/input";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { del, get, set } from "idb-keyval";
@@ -78,7 +78,7 @@ export default function ContractAddress() {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
           New contract address
         </h3>
         <Input

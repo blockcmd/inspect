@@ -1,12 +1,9 @@
 "use client";
 
-import AbiStorage from "@/components/abis-storage";
-import FunctionDashboard from "@/components/function-dashboard";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useSearchParams } from "next/navigation";
-import { del, get, set } from "idb-keyval";
-import { useEffect, useState } from "react";
-import ContractAddress from "@/components/contract-address";
+import { useState } from "react";
+import Link from "next/link";
+import { Input } from "@/components/ui/input";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,21 +12,24 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { getAddress } from 'viem'
 
 export default function Page() {
-  const searchParams = useSearchParams();
-  const abiName = searchParams.get("abiName");
-  const [abi, setAbi] = useState("");
-  useEffect(() => {
-    if (abiName) {
-      get(abiName).then((val) => setAbi(JSON.parse(val)));
-    }
-  }, [abiName]);
+  const [contractAddress, setContractAddress] = useState("");
+
+  function handleInputContractAddressChange(
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
+    setContractAddress(e.target.value);
+  }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-12">
       <ConnectButton />
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Kaia</h1>
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        Kaia
+      </h1>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -41,11 +41,21 @@ export default function Page() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">ABI</h2>
-      <AbiStorage />
-      <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">Contract address</h2>
-      <ContractAddress />
-      {abi && <FunctionDashboard abi={abi} />}
+      <div className="flex flex-col gap-8">
+        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+          Contract address
+        </h2>
+        <Input
+          placeholder="set contract address"
+          value={contractAddress}
+          onChange={handleInputContractAddressChange}
+        />
+        <Button asChild className="w-fit">
+          <Link href={`/kaia/address/${contractAddress ? getAddress(contractAddress) : ""}`}>
+            Proceed
+          </Link>
+        </Button>
+      </div>
     </div>
   );
 }
