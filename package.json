@@ -19,15 +19,17 @@
     "@uidotdev/usehooks": "^2.4.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "fast-xml-parser": "^4.4.1",
     "idb-keyval": "^6.2.1",
     "lucide-react": "^0.372.0",
-    "next": "^14.2.3",
+    "next": "^14.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "viem": "^2.9.23",
-    "wagmi": "^2.5.20"
+    "wagmi": "^2.5.20",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@types/node": "^20",
