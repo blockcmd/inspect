@@ -50,8 +50,8 @@ export default function AbiStorage() {
         value={abiName}
         onChange={handleInputABINameChange}
       />
-      <Button onClick={saveABI}>Save ABI</Button>
-      <h2>Current ABIs</h2>
+      <Button className="w-fit" onClick={saveABI}>Save ABI</Button>
+      <h2>Saved ABIs</h2>
       <div className="flex flex-row gap-4">
         {savedABIs.map((abiName, index) => (
           <Link scroll={false} key={index} href={`?abiName=${abiName}`}>{abiName}</Link>

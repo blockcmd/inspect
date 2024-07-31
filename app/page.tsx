@@ -1,35 +1,21 @@
-'use client'
-
-import AbiStorage from "@/components/abis-storage";
-import FunctionDashboard from "@/components/function-dashboard";
-import { zxstimAbi } from "@/components/abis";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useSearchParams } from "next/navigation"
-import { del, get, set } from 'idb-keyval'
-import { useEffect, useState } from "react";
-import ContractAddress from "@/components/contract-address";
+import Link from "next/link"
+import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
-  const searchParams = useSearchParams()
-  const abiName = searchParams.get('abiName')
-  const [abi, setAbi] = useState('')
-  useEffect(() => {
-    if (abiName) {
-      get(abiName).then((val) => setAbi(JSON.parse(val)))
-    }
-  }, [abiName]);
-  
 
   return (
-    <div>
-      <ConnectButton />
-      <AbiStorage />
-      <ContractAddress />
-      {
-        abi && (
-          <FunctionDashboard abi={abi}/>
-        )
-      }
+    <div className="flex flex-col gap-12 w-[768px] items-center self-center">
+      <div className="flex flex-col gap-4 text-center">  
+        <h1>BlockCMD Inspect</h1>
+        <p>Interact with any contracts</p>
+      </div>
+
+      <Link className="flex flex-row justify-between items-center border-2 border-primary hover:bg-primary hover:text-secondary p-4 w-full" href="/kaia">
+        <p>
+          Kaia
+        </p>
+        <ArrowRight />
+      </Link>
     </div>
   );
 }

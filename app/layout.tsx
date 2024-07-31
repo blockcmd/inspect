@@ -22,8 +22,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <main className="flex flex-col gap-8 items-center justify-center py-12 px-4 lg:p-16">
-            <div className="hidden lg:flex lg:flex-col lg:gap-12 w-full">
+          <main className="flex flex-col gap-8 items-center justify-center py-12 px-4 lg:p-16 font-mono">
+            <div className="hidden lg:flex lg:flex-col lg:gap-12 w-[1280px]">
               {children}
               <Toaster />
             </div>
