@@ -43,6 +43,7 @@ export default function Page() {
       </Breadcrumb>
       <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">ABI</h2>
       <AbiStorage />
+      <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">Contract address</h2>
       <ContractAddress />
       {abi && <FunctionDashboard abi={abi} />}
     </div>

@@ -42,10 +42,10 @@ export default function AbiStorage() {
     <div className="flex flex-col gap-12">
       <div className="flex flex-col gap-4">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Saved ABIs</h3>
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-wrap gap-4">
           {savedABIs.map((abiName, index) => (
             <Link scroll={false} key={index} href={`?abiName=${abiName}`}>
-              <div className="flex flex-col border-2 border-primary hover:bg-primary hover:text-secondary p-4 w-[160px] h-[80px]">
+              <div className="flex flex-col border-2 border-primary hover:bg-primary hover:text-secondary px-4 py-2 w-fit">
                 {abiName}
               </div>
             </Link>
