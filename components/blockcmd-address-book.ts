@@ -1,4 +1,4 @@
-type AddressBookEntry = {
+export type AddressBookEntry = {
   id: number
   name: string
   symbol: string
@@ -11,7 +11,7 @@ export const blockcmdAddressBook: AddressBookEntry[] = [
     id: 1,
     name: "Wrapped KLAY",
     symbol: "WKLAY",
-    network: "kaiaKairos",
+    network: "kaia-kairos",
     address: "0x043c471bEe060e00A56CcD02c0Ca286808a5A436"
   },
   {
