@@ -8,11 +8,11 @@ import { ArrowRight } from "lucide-react";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 type AddressBookEntry = {
-  id: number;
-  name: string;
-  symbol: string;
-  network: string;
-  address: string;
+  id: number
+  name: string
+  symbol: string
+  network: string
+  address: string
 };
 
 const columns: ColumnDef<AddressBookEntry>[] = [
