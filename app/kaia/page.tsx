@@ -15,9 +15,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { getAddress } from "viem";
 import { ArrowRight } from "lucide-react";
+import BlockcmdAddressBookTable from "@/components/blockcmd-address-book-table";
+import { blockcmdAddressBook, AddressBookEntry } from "@/components/blockcmd-address-book";
 
 export default function Page() {
   const [contractAddress, setContractAddress] = useState("");
+
+  function filterAddressBookForKaia(blockcmdAddressBook: AddressBookEntry[]) {
+    return blockcmdAddressBook.filter((entry) => entry.network === "kaia");
+  }
 
   function handleInputContractAddressChange(
     e: React.ChangeEvent<HTMLInputElement>
@@ -27,7 +33,6 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-12">
-      <ConnectButton />
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
         Kaia
       </h1>
@@ -69,10 +74,11 @@ export default function Page() {
         </h2>
       </div>
       <p>or</p>
-      <div>
+      <div className="flex flex-col gap-4">
         <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight">
           Select from BlockCMD address book
         </h2>
+        <BlockcmdAddressBookTable blockcmdAddressBook={filterAddressBookForKaia(blockcmdAddressBook)} />
       </div>
     </div>
   );
