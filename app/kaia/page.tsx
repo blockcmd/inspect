@@ -13,7 +13,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { getAddress } from 'viem'
+import { getAddress } from "viem";
+import { ArrowRight } from "lucide-react";
 
 export default function Page() {
   const [contractAddress, setContractAddress] = useState("");
@@ -41,20 +42,37 @@ export default function Page() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="flex flex-col gap-8">
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-          Contract address
+      <div className="flex flex-col gap-4">
+        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight">
+          Enter contract address
         </h2>
         <Input
-          placeholder="set contract address"
+          className="border-2 border-primary rounded-none mt-4"
+          placeholder="0x..."
           value={contractAddress}
           onChange={handleInputContractAddressChange}
         />
         <Button asChild className="w-fit">
-          <Link href={`/kaia/address/${contractAddress ? getAddress(contractAddress) : ""}`}>
-            Proceed
+          <Link
+            href={`/kaia/address/${
+              contractAddress ? getAddress(contractAddress) : ""
+            }`}
+          >
+            Go <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
         </Button>
+      </div>
+      <p>or</p>
+      <div>
+        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight">
+          Select from your address book
+        </h2>
+      </div>
+      <p>or</p>
+      <div>
+        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight">
+          Select from BlockCMD address book
+        </h2>
       </div>
     </div>
   );

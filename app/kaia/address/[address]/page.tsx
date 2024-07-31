@@ -40,7 +40,7 @@ export default function Page( { params }: { params: { address: string } }) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage></BreadcrumbPage>
+            <BreadcrumbPage>{params.address}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
