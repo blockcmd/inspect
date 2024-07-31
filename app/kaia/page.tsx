@@ -73,9 +73,7 @@ export default function Page() {
         </h2>
         <Button variant="secondary" asChild className="w-fit">
           <Link
-            href={`/kaia/address/${
-              contractAddress ? getAddress(contractAddress) : ""
-            }`}
+            href="/my-address-book"
           >
             Manage my address book <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
@@ -86,6 +84,13 @@ export default function Page() {
         <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight">
           Select from BlockCMD address book
         </h2>
+        <Button variant="secondary" asChild className="w-fit">
+          <Link
+            href="/blockcmd-address-book"
+          >
+            See full BlockCMD address book <ArrowRight className="ml-2 w-4 h-4" />
+          </Link>
+        </Button>
         <BlockcmdAddressBookTable blockcmdAddressBook={filterAddressBookForKaia(blockcmdAddressBook)} />
       </div>
     </div>
