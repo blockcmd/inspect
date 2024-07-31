@@ -11,11 +11,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: 'BlockCMD Inspect',
   description: 'Interact with any contracts on any chains',
-  metadataBase: new URL('https://www.blockcmd.com'),
+  metadataBase: new URL('https://inspect.blockcmd.com'),
   openGraph: {
     title: 'BlockCMD Inspect',
     description: 'Interact with any contracts on any chains',
-    url: 'https://www.blockcmd.com',
+    url: 'https://inspect.blockcmd.com',
     siteName: 'BlockCMD',
     images: [
       {
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'BlockCMD Inspect',
     description: 'Interact with any contracts on any chains',
-    creator: '@zxstim',
+    creator: '@blockcmdHQ',
     images: ['/blockcmd-tbn.png'],
   },
 }
