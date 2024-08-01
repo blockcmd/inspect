@@ -73,7 +73,7 @@ export default function Home() {
               href="/blockcmd-address-book"
               className="flex flex-row items-center justify-between"
             >
-              Transformer <ArrowRight className="ml-2 w-4 h-4" />
+              Converter <ArrowRight className="ml-2 w-4 h-4" />
             </Link>
           </Button>
         </div>
