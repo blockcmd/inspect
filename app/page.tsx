@@ -41,7 +41,7 @@ export default function Home() {
             className="w-full hover:outline hover:outline-offset-1 hover:outline-2"
           >
             <Link
-              href="/my-address-book"
+              href="/my-abi-book"
               className="flex flex-row items-center justify-between"
             >
               My saved ABIs <ArrowRight className="ml-2 w-4 h-4" />
