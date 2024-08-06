@@ -8,16 +8,23 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Trash2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { createId } from '@paralleldrive/cuid2';
+
+type AbiEntry = {
+  id: string;
+  name: string;
+  abi: string;
+};
 
 export default function AbiManagement() {
   const searchParams = useSearchParams();
   const [savedAbi, setSavedAbi] = useState("");
   const [abi, setAbi] = useState("");
   const [abiName, setAbiName] = useState("");
-  const [savedABIs, setSavedABIs] = useState<string[]>([]);
+  const [savedABIs, setSavedABIs] = useState<AbiEntry[]>([]);
   useEffect(() => {
     {
-      get("saved_abis_list").then((savedABIs: string[]) => {
+      get("saved_abis").then((savedABIs: AbiEntry[]) => {
         setSavedABIs(savedABIs || []);
       });
     }
@@ -25,8 +32,8 @@ export default function AbiManagement() {
 
   useEffect(() => {
     {
-      if (searchParams.get("abi")) {
-        get(searchParams.get("abi") || "").then((val) => setSavedAbi(val));
+      if (searchParams.get("abiID")) {
+        get(searchParams.get("abiID") || "").then((val) => setSavedAbi(val));
       }
     }
   }, [searchParams]);
@@ -40,11 +47,15 @@ export default function AbiManagement() {
   }
 
   function saveABI() {
-    get("saved_abis_list").then((savedABIs: string[]) => {
-      var savedABIsList = savedABIs || [];
-      savedABIsList.push(abiName);
-      set("saved_abis_list", savedABIsList);
-      set(abiName, abi);
+    get("saved_abis").then((savedABIs: AbiEntry[]) => {
+      let savedABIsList = savedABIs || [];
+      let abiEntry: AbiEntry = {
+        id: createId(),
+        name: abiName,
+        abi: abi
+      };
+      savedABIsList.push(abiEntry);
+      set("saved_abis", savedABIsList);
     });
   }
 
@@ -64,15 +75,25 @@ export default function AbiManagement() {
           Saved ABIs
         </h3>
         <div className="flex flex-row gap-4">
-          <div className="flex flex-col gap-4">
-            {savedABIs.map((abiName, index) => (
-              <Link href={`?abi=${abiName}`} key={index}>
+          {
+            savedABIs && savedABIs.length > 0 ? (
+              <div className="flex flex-col gap-4">
+                {savedABIs.map((savedAbi) => (
+                  <Link href={`?abiID=${savedAbi.id}&abiName=${savedAbi.name}`} key={savedAbi.id}>
+                    <div className="flex flex-row items-center justify-between gap-4 border-2 border-primary px-4 py-2 w-[400px]">
+                      {savedAbi.name}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div>
                 <div className="flex flex-row items-center justify-between gap-4 border-2 border-primary px-4 py-2 w-[400px]">
-                  {abiName}
+                  No saved ABIs
                 </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+            )
+          }
           <div className="flex flex-col gap-4 w-full">
             <div className="flex flex-row gap-2">
               <Button className="w-fit" onClick={prettifyABI}>Prettify</Button>
