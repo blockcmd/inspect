@@ -69,13 +69,13 @@ export default function Page() {
       <p>or</p>
       <div className="flex flex-col gap-4">
         <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight">
-          Select from your address book
+          Select from your contract book
         </h2>
         <Button variant="secondary" asChild className="w-fit hover:outline hover:outline-offset-1 hover:outline-2">
           <Link
-            href="/my-address-book"
+            href="/my-contract-book"
           >
-            Manage my address book <ArrowRight className="ml-2 w-4 h-4" />
+            Manage my contract book <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
         </Button>
       </div>

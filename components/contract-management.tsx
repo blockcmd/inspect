@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Trash2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { createId } from '@paralleldrive/cuid2';
+import { createId } from "@paralleldrive/cuid2";
 
 type ContractEntry = {
   id: string;
@@ -24,7 +24,6 @@ export default function ContractManagement() {
   const [address, setAddress] = useState("");
   const [savedContracts, setSavedContracts] = useState<ContractEntry[]>([]);
 
-
   useEffect(() => {
     {
       get("saved_contracts").then((savedContracts: ContractEntry[]) => {
@@ -32,7 +31,6 @@ export default function ContractManagement() {
       });
     }
   }, [savedContracts]);
-
 
   function handleInputABIChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setAbi(e.target.value);
@@ -53,7 +51,7 @@ export default function ContractManagement() {
         id: createId(),
         name: abiName,
         abi: abi,
-        address: address
+        address: address,
       };
       newSavedABIsList.push(contractEntry);
       set("saved_contracts", newSavedABIsList);
@@ -63,9 +61,25 @@ export default function ContractManagement() {
   function prettifyAndSaveABI() {
     get("saved_contracts").then((savedContracts: ContractEntry[]) => {
       let newSavedABIsList = savedContracts || [];
-      if (newSavedABIsList && newSavedABIsList.length > 0 && searchParams.get("contractId")) {
-        let currentAbiEntryindex: number = newSavedABIsList.findIndex((contractEntry: ContractEntry) => contractEntry.id === searchParams.get("contractId"));
-        newSavedABIsList[currentAbiEntryindex].abi = JSON.stringify(JSON.parse(savedContracts.find((contractEntry: ContractEntry) => contractEntry.id === searchParams.get("abiID"))?.abi || ""), null, 2);
+      if (
+        newSavedABIsList &&
+        newSavedABIsList.length > 0 &&
+        searchParams.get("contractId")
+      ) {
+        let currentAbiEntryindex: number = newSavedABIsList.findIndex(
+          (contractEntry: ContractEntry) =>
+            contractEntry.id === searchParams.get("contractId")
+        );
+        newSavedABIsList[currentAbiEntryindex].abi = JSON.stringify(
+          JSON.parse(
+            savedContracts.find(
+              (contractEntry: ContractEntry) =>
+                contractEntry.id === searchParams.get("contractId")
+            )?.abi || ""
+          ),
+          null,
+          2
+        );
         set("saved_contracts", newSavedABIsList);
       }
     });
@@ -78,30 +92,42 @@ export default function ContractManagement() {
           Saved contracts
         </h3>
         <div className="flex flex-row gap-4">
-          {
-            savedContracts && savedContracts.length > 0 ? (
-              <div className="flex flex-col gap-4">
-                {savedContracts.map((savedContract) => (
-                  <Link href={`?contractId=${savedContract.id}&contractName=${savedContract.name}`} key={savedContract.id}>
-                    <div className="flex flex-row items-center justify-between gap-4 border-2 border-primary px-4 py-2 w-[400px]">
-                      {savedContract.name}
-                    </div>
-                  </Link>
-                ))}
+          {savedContracts && savedContracts.length > 0 ? (
+            <div className="flex flex-col gap-4">
+              {savedContracts.map((savedContract) => (
+                <Link
+                  href={`?contractId=${savedContract.id}&contractName=${savedContract.name}`}
+                  key={savedContract.id}
+                >
+                  <div className="flex flex-row items-center justify-between gap-4 border-2 border-primary px-4 py-2 w-[400px]">
+                    {savedContract.name}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div>
+              <div className="flex flex-row items-center justify-between gap-4 border-2 border-primary px-4 py-2 w-[400px]">
+                No saved ABIs
               </div>
-            ) : (
-              <div>
-                <div className="flex flex-row items-center justify-between gap-4 border-2 border-primary px-4 py-2 w-[400px]">
-                  No saved ABIs
-                </div>
-              </div>
-            )
-          }
+            </div>
+          )}
           <div className="flex flex-col gap-4 w-full">
-            <Button variant="secondary" className="w-fit" onClick={prettifyAndSaveABI}>Prettify & Save</Button>
+            <Button
+              variant="secondary"
+              className="w-fit"
+              onClick={prettifyAndSaveABI}
+            >
+              Prettify & Save
+            </Button>
             <Textarea
               placeholder="paste in a contract ABI"
-              value={savedContracts.find((abiEntry: ContractEntry) => abiEntry.id === searchParams.get("contractId"))?.abi || ""}
+              value={
+                savedContracts.find(
+                  (abiEntry: ContractEntry) =>
+                    abiEntry.id === searchParams.get("contractId")
+                )?.abi || ""
+              }
               className="h-96 w-full"
               readOnly
             />

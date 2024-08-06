@@ -15,6 +15,13 @@ type AddressBookEntry = {
   address: string
 };
 
+function truncateText(text: string) {
+  if (text.length > 10) {
+    return text.slice(0, 10) + "...";
+  }
+  return text;
+}
+
 const columns: ColumnDef<AddressBookEntry>[] = [
   {
     accessorKey: "id",
@@ -27,6 +34,14 @@ const columns: ColumnDef<AddressBookEntry>[] = [
   {
     accessorKey: "abi",
     header: "ABI",
+    cell: ({ row }) => {
+      const entry = row.original;
+      return (
+        <p>
+          {truncateText(entry.abi)}
+        </p>
+      );
+    },
   },
   {
     accessorKey: "network",
@@ -56,7 +71,7 @@ const columns: ColumnDef<AddressBookEntry>[] = [
           <Link
             href={`/${row.getValue("network")}/address/${row.getValue(
               "address"
-            )}/${row.getValue("abi")}`}
+            )}/${truncateText(row.getValue("abi"))}`}
           >
             Go <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
