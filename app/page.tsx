@@ -29,22 +29,10 @@ export default function Home() {
             className="w-full hover:outline hover:outline-offset-1 hover:outline-2"
           >
             <Link
-              href="/my-address-book"
+              href="/my-contract-book"
               className="flex flex-row items-center justify-between"
             >
-              My address book <ArrowRight className="ml-2 w-4 h-4" />
-            </Link>
-          </Button>
-          <Button
-            variant="secondary"
-            asChild
-            className="w-full hover:outline hover:outline-offset-1 hover:outline-2"
-          >
-            <Link
-              href="/my-abi-book"
-              className="flex flex-row items-center justify-between"
-            >
-              My saved ABIs <ArrowRight className="ml-2 w-4 h-4" />
+              My contract book <ArrowRight className="ml-2 w-4 h-4" />
             </Link>
           </Button>
         </div>
@@ -58,10 +46,10 @@ export default function Home() {
             className="w-full hover:outline hover:outline-offset-1 hover:outline-2"
           >
             <Link
-              href="/blockcmd-address-book"
+              href="/blockcmd-contract-book"
               className="flex flex-row items-center justify-between"
             >
-              BlockCMD address book <ArrowRight className="ml-2 w-4 h-4" />
+              BlockCMD contract book <ArrowRight className="ml-2 w-4 h-4" />
             </Link>
           </Button>
           <Button
@@ -70,7 +58,7 @@ export default function Home() {
             className="w-full hover:outline hover:outline-offset-1 hover:outline-2"
           >
             <Link
-              href="/blockcmd-address-book"
+              href="/converter"
               className="flex flex-row items-center justify-between"
             >
               Converter <ArrowRight className="ml-2 w-4 h-4" />
