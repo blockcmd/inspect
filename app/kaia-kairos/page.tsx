@@ -18,17 +18,18 @@ import { get } from "idb-keyval";
 import BlockcmdAddressBookTable from "@/components/blockcmd-address-book-table";
 import { blockcmdAddressBook, AddressBookEntry } from "@/components/blockcmd-address-book";
 import MyContractBookTable from "@/components/my-contract-book-table";
-import { ContractEntry } from "@/components/my-contract-book-table";
+import { ContractTableEntry } from "@/components/my-contract-book-table";
 
 
 export default function Page() {
   const [contractAddress, setContractAddress] = useState("");
-  const [savedContracts, setSavedContracts] = useState<ContractEntry[]>([]);
+  const [savedContracts, setSavedContracts] = useState<ContractTableEntry[]>([]);
 
   useEffect(() => {
     {
-      get("saved_contracts").then((savedContracts: ContractEntry[]) => {
-        setSavedContracts(savedContracts || []);
+      get("saved_contracts").then((savedContracts: ContractTableEntry[]) => {
+        let filteredSavedContracts = savedContracts.filter((entry) => entry.network === "kaia-kairos");
+        setSavedContracts(filteredSavedContracts || []);
       });
     }
   }, [savedContracts]);

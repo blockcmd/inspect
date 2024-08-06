@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
-export type ContractEntry = {
+export type ContractTableEntry = {
   id: string
   name: string
   network: string | undefined
@@ -19,7 +19,7 @@ function truncateTextInMiddle(text: string) {
   return text;
 }
 
-const columns: ColumnDef<ContractEntry>[] = [
+const columns: ColumnDef<ContractTableEntry>[] = [
   {
     accessorKey: "id",
     header: "ID",
@@ -76,7 +76,7 @@ const columns: ColumnDef<ContractEntry>[] = [
 export default function MyContractBookTable({
   savedContracts,
 }: {
-  savedContracts: ContractEntry[];
+  savedContracts: ContractTableEntry[];
 }) {
   return <DataTable columns={columns} data={savedContracts} />;
 }

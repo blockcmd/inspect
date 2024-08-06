@@ -13,14 +13,21 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { ContractEntry } from "@/components/contract-management";
 
 
 export default function Page( { params }: { params: { address: string, abi: string } }) {
   const [abi, setAbi] = useState("");
+
   useEffect(() => {
-    if (params.abi) {
-      get(params.abi).then((val) => setAbi(JSON.parse(val)));
-    }
+    if (params.abi === "temporary-abi") {
+      get(params.abi).then((tempAbi) => setAbi(JSON.parse(tempAbi)));
+    } else {
+      get("saved_contracts").then((savedContracts) => {
+        let selectedContract = savedContracts.find((contract: ContractEntry) => (contract.id === params.abi)).abi;
+        setAbi(JSON.parse(selectedContract || ""));
+        });
+      }
   }, [params.abi]);
 
   return (
