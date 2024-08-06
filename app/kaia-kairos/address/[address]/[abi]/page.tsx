@@ -18,15 +18,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-export default function Page( { params }: { params: { address: string } }) {
-  const searchParams = useSearchParams();
-  const abiName = searchParams.get("abiName");
+export default function Page( { params }: { params: { abi: string } }) {
   const [abi, setAbi] = useState("");
   useEffect(() => {
-    if (abiName) {
-      get(abiName).then((val) => setAbi(JSON.parse(val)));
+    if (params.abi) {
+      get(params.abi).then((val) => setAbi(JSON.parse(val)));
     }
-  }, [abiName]);
+  }, [params.abi]);
 
   return (
     <div className="flex flex-col gap-12">
@@ -39,24 +37,13 @@ export default function Page( { params }: { params: { address: string } }) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/kaia">Kaia</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{params.address}</BreadcrumbPage>
+            <BreadcrumbLink href="/kaia-kairos">Kaia Kairos</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex flex-col gap-8">
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">ABI</h2>
-        <Button variant="secondary" asChild className="w-fit hover:outline hover:outline-offset-1 hover:outline-2">
-          <Link
-            href="/my-abi-book"
-          >
-            Manage my saved ABIs <ArrowRight className="ml-2 w-4 h-4" />
-          </Link>
-        </Button>
-        <AbiStorage address={params.address} />
+        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">Functions</h2>
+        {abi && <FunctionDashboard abi={abi} />}
       </div>
     </div>
   );

@@ -5,11 +5,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { del, get, set } from "idb-keyval";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 
-export default function AbiStorage() {
-  const searchParams = useSearchParams();
+export default function AbiStorage({ address }: { address: string }) {
   const [abi, setAbi] = useState("");
   const [abiName, setAbiName] = useState("");
   const [savedABIs, setSavedABIs] = useState<string[]>([]);
@@ -44,7 +43,7 @@ export default function AbiStorage() {
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Saved ABIs</h3>
         <div className="flex flex-wrap gap-4">
           {savedABIs.map((abiName, index) => (
-            <Link scroll={false} key={index} href={`?abiName=${abiName}`}>
+            <Link scroll={false} key={index} href={`${address}/${abiName}`}>
               <div className="flex flex-col border-2 border-primary hover:bg-primary hover:text-secondary px-4 py-2 w-fit">
                 {abiName}
               </div>
@@ -52,7 +51,7 @@ export default function AbiStorage() {
           ))}
         </div>
       </div>
-      <div className="flex flex-col gap-4">
+      {/* <div className="flex flex-col gap-4">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">New ABI</h3>
         <Textarea
           placeholder="paste in a contract ABI"
@@ -68,8 +67,7 @@ export default function AbiStorage() {
         <Button className="w-fit" onClick={saveABI}>
           Save ABI
         </Button>
-      </div>
-
+      </div> */}
     </div>
   );
 }
