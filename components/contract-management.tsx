@@ -10,26 +10,28 @@ import { Trash2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { createId } from '@paralleldrive/cuid2';
 
-type AbiEntry = {
+type ContractEntry = {
   id: string;
   name: string;
   abi: string;
+  address: string;
 };
 
 export default function ContractManagement() {
   const searchParams = useSearchParams();
   const [abi, setAbi] = useState("");
   const [abiName, setAbiName] = useState("");
-  const [savedABIs, setSavedABIs] = useState<AbiEntry[]>([]);
+  const [address, setAddress] = useState("");
+  const [savedContracts, setSavedContracts] = useState<ContractEntry[]>([]);
 
 
   useEffect(() => {
     {
-      get("saved_abis").then((savedABIs: AbiEntry[]) => {
-        setSavedABIs(savedABIs || []);
+      get("saved_contracts").then((savedContracts: ContractEntry[]) => {
+        setSavedContracts(savedContracts || []);
       });
     }
-  }, [savedABIs]);
+  }, [savedContracts]);
 
 
   function handleInputABIChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -40,26 +42,31 @@ export default function ContractManagement() {
     setAbiName(e.target.value);
   }
 
-  function saveABI() {
-    get("saved_abis").then((savedABIs: AbiEntry[]) => {
-      let newSavedABIsList = savedABIs || [];
-      let abiEntry: AbiEntry = {
+  function handleInputAddressChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setAddress(e.target.value);
+  }
+
+  function saveContract() {
+    get("saved_contracts").then((savedContracts: ContractEntry[]) => {
+      let newSavedABIsList = savedContracts || [];
+      let contractEntry: ContractEntry = {
         id: createId(),
         name: abiName,
-        abi: abi
+        abi: abi,
+        address: address
       };
-      newSavedABIsList.push(abiEntry);
-      set("saved_abis", newSavedABIsList);
+      newSavedABIsList.push(contractEntry);
+      set("saved_contracts", newSavedABIsList);
     });
   }
 
   function prettifyAndSaveABI() {
-    get("saved_abis").then((savedABIs: AbiEntry[]) => {
-      let newSavedABIsList = savedABIs || [];
-      if (newSavedABIsList && newSavedABIsList.length > 0 && searchParams.get("abiID")) {
-        let currentAbiEntryindex: number = newSavedABIsList.findIndex((abiEntry: AbiEntry) => abiEntry.id === searchParams.get("abiID"));
-        newSavedABIsList[currentAbiEntryindex].abi = JSON.stringify(JSON.parse(savedABIs.find((abiEntry: AbiEntry) => abiEntry.id === searchParams.get("abiID"))?.abi || ""), null, 2);
-        set("saved_abis", newSavedABIsList);
+    get("saved_contracts").then((savedContracts: ContractEntry[]) => {
+      let newSavedABIsList = savedContracts || [];
+      if (newSavedABIsList && newSavedABIsList.length > 0 && searchParams.get("contractId")) {
+        let currentAbiEntryindex: number = newSavedABIsList.findIndex((contractEntry: ContractEntry) => contractEntry.id === searchParams.get("contractId"));
+        newSavedABIsList[currentAbiEntryindex].abi = JSON.stringify(JSON.parse(savedContracts.find((contractEntry: ContractEntry) => contractEntry.id === searchParams.get("abiID"))?.abi || ""), null, 2);
+        set("saved_contracts", newSavedABIsList);
       }
     });
   }
@@ -68,16 +75,16 @@ export default function ContractManagement() {
     <div className="flex flex-col gap-12">
       <div className="flex flex-col gap-4">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-          Saved ABIs
+          Saved contracts
         </h3>
         <div className="flex flex-row gap-4">
           {
-            savedABIs && savedABIs.length > 0 ? (
+            savedContracts && savedContracts.length > 0 ? (
               <div className="flex flex-col gap-4">
-                {savedABIs.map((savedAbi) => (
-                  <Link href={`?abiID=${savedAbi.id}&abiName=${savedAbi.name}`} key={savedAbi.id}>
+                {savedContracts.map((savedContract) => (
+                  <Link href={`?contractId=${savedContract.id}&contractName=${savedContract.name}`} key={savedContract.id}>
                     <div className="flex flex-row items-center justify-between gap-4 border-2 border-primary px-4 py-2 w-[400px]">
-                      {savedAbi.name}
+                      {savedContract.name}
                     </div>
                   </Link>
                 ))}
@@ -94,20 +101,26 @@ export default function ContractManagement() {
             <Button variant="secondary" className="w-fit" onClick={prettifyAndSaveABI}>Prettify & Save</Button>
             <Textarea
               placeholder="paste in a contract ABI"
-              value={savedABIs.find((abiEntry: AbiEntry) => abiEntry.id === searchParams.get("abiID"))?.abi || ""}
+              value={savedContracts.find((abiEntry: ContractEntry) => abiEntry.id === searchParams.get("contractId"))?.abi || ""}
               className="h-96 w-full"
+              readOnly
             />
           </div>
         </div>
       </div>
       <div className="flex flex-col gap-4">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-          New ABI
+          New contract
         </h3>
         <Input
           placeholder="set abi name"
           value={abiName}
           onChange={handleInputABINameChange}
+        />
+        <Input
+          placeholder="set contract address"
+          value={address}
+          onChange={handleInputAddressChange}
         />
         <Textarea
           placeholder="paste in a contract ABI"
@@ -115,8 +128,8 @@ export default function ContractManagement() {
           onChange={handleInputABIChange}
           className="h-96 w-full"
         />
-        <Button className="w-fit" onClick={saveABI}>
-          Save ABI
+        <Button className="w-fit" onClick={saveContract}>
+          Save contract
         </Button>
       </div>
     </div>
