@@ -1,11 +1,6 @@
 "use client";
 
 import AbiStorage from "@/components/abis-storage";
-import FunctionDashboard from "@/components/function-dashboard";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useSearchParams } from "next/navigation";
-import { del, get, set } from "idb-keyval";
-import { useEffect, useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,19 +14,10 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function Page( { params }: { params: { address: string } }) {
-  const searchParams = useSearchParams();
-  const abiName = searchParams.get("abiName");
-  const [abi, setAbi] = useState("");
-  useEffect(() => {
-    if (abiName) {
-      get(abiName).then((val) => setAbi(JSON.parse(val)));
-    }
-  }, [abiName]);
 
   return (
     <div className="flex flex-col gap-12">
-      <ConnectButton />
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Kaia</h1>
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Kaia Kairos</h1>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -39,7 +25,7 @@ export default function Page( { params }: { params: { address: string } }) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/kaia">Kaia</BreadcrumbLink>
+            <BreadcrumbLink href="/kaia-kairos">Kaia Kairos</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

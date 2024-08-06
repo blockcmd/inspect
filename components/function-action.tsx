@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,8 +8,6 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
 } from "wagmi";
-import { zxstimAbi } from "@/components/abis";
-import { serialize, deserialize } from "wagmi";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -18,20 +16,24 @@ import { Label } from "@/components/ui/label";
 import { set, get } from "idb-keyval";
 import { Loader2, Check } from "lucide-react";
 
-
-export default function FunctionAction({ functionObjects }: { functionObjects: any }) {
+export default function FunctionAction({
+  functionObjects,
+}: {
+  functionObjects: any;
+}) {
+  const params = useParams();
   const searchParams = useSearchParams();
-  const abiName = searchParams.get("abiName");
+  const abiName = params.abi;
   const functionName = searchParams.get("functionName");
   const functionIndex = searchParams.get("functionIndex");
-  const contractAddress = searchParams.get("contractAddress");
+  const contractAddress = params.address;
   const [abi, setAbi] = useState<any>([]);
   const [result, setResult] = useState<any>("n/a");
   const [args, setArgs] = useState<any>([]);
 
   useEffect(() => {
     if (abiName) {
-      get(abiName).then((val) => setAbi(JSON.parse(val)))
+      get(abiName).then((val) => setAbi(JSON.parse(val)));
     }
   }, [abiName]);
 
@@ -102,11 +104,7 @@ export default function FunctionAction({ functionObjects }: { functionObjects: a
               functionObjects[Number(functionIndex)].inputs.length == 0 ? (
                 <div className="flex flex-col gap-4">
                   <p>No inputs required</p>
-                  <Button
-                    className="w-fit font-mono"
-                  >
-                    Read
-                  </Button>
+                  <Button className="w-fit font-mono">Read</Button>
                 </div>
               ) : functionObjects[Number(functionIndex)].stateMutability ===
                   "view" &&
@@ -116,9 +114,9 @@ export default function FunctionAction({ functionObjects }: { functionObjects: a
                     (input: any, index: number) => (
                       <div
                         key={index}
-                        className="grid grid-cols-5 gap-2 items-center"
+                        className="flex flex-col gap-2 items-start"
                       >
-                        <Label className="font-mono" htmlFor={input.name}>
+                        <Label className="font-mono w-fit" htmlFor={input.name}>
                           {input.name}
                         </Label>
                         <Input
@@ -126,17 +124,13 @@ export default function FunctionAction({ functionObjects }: { functionObjects: a
                           id={input.name}
                           name={input.name}
                           placeholder={input.type}
-                          className="col-span-4 border-2 p-2 rounded-md w-full"
+                          className="border-2 p-2 rounded-md w-full"
                           onChange={(e: any) => handleArgsChange(e, index)}
                         />
                       </div>
                     )
                   )}
-                  <Button
-                    className="w-fit font-mono"
-                  >
-                    Read
-                  </Button>
+                  <Button className="w-fit font-mono">Read</Button>
                 </div>
               ) : (
                 <div className="flex flex-col gap-4">
@@ -144,7 +138,7 @@ export default function FunctionAction({ functionObjects }: { functionObjects: a
                     (input: any, index: number) => (
                       <div
                         key={index}
-                        className="grid grid-cols-5 gap-2 items-center"
+                        className="flex flex-col gap-2 items-start"
                       >
                         <Label className="font-mono" htmlFor={input.name}>
                           {input.name}
@@ -154,7 +148,7 @@ export default function FunctionAction({ functionObjects }: { functionObjects: a
                           id={input.name}
                           name={input.name}
                           placeholder={input.type}
-                          className="col-span-4 border-2 p-2 rounded-md w-full"
+                          className="border-2 p-2 rounded-md w-full"
                           onChange={(e) => handleArgsChange(e, index)}
                         />
                       </div>
