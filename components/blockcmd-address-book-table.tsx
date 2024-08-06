@@ -10,7 +10,7 @@ import { ArrowRight } from "lucide-react";
 type AddressBookEntry = {
   id: number
   name: string
-  symbol: string
+  abi: string
   network: string
   address: string
 };
@@ -25,8 +25,8 @@ const columns: ColumnDef<AddressBookEntry>[] = [
     header: "Name",
   },
   {
-    accessorKey: "symbol",
-    header: "Symbol",
+    accessorKey: "abi",
+    header: "ABI",
   },
   {
     accessorKey: "network",
@@ -56,7 +56,7 @@ const columns: ColumnDef<AddressBookEntry>[] = [
           <Link
             href={`/${row.getValue("network")}/address/${row.getValue(
               "address"
-            )}`}
+            )}/${row.getValue("abi")}`}
           >
             Go <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
