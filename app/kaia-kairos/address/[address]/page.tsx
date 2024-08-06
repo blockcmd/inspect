@@ -1,6 +1,6 @@
 "use client";
 
-import AbiStorage from "@/components/abis-storage";
+import AbiTemp from "@/components/abi-temp";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -34,15 +34,15 @@ export default function Page( { params }: { params: { address: string } }) {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex flex-col gap-8">
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">ABI</h2>
+        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">Select ABI</h2>
         <Button variant="secondary" asChild className="w-fit hover:outline hover:outline-offset-1 hover:outline-2">
           <Link
-            href="/my-abi-book"
+            href="/my-contract-book"
           >
             Manage my saved ABIs <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
         </Button>
-        <AbiStorage address={params.address} />
+        <AbiTemp address={params.address} />
       </div>
     </div>
   );

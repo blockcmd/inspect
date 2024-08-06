@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { del, get, set } from "idb-keyval";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
