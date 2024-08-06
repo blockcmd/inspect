@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,11 +14,24 @@ import {
 import { Button } from "@/components/ui/button";
 import { getAddress } from "viem";
 import { ArrowRight } from "lucide-react";
+import { get } from "idb-keyval";
 import BlockcmdAddressBookTable from "@/components/blockcmd-address-book-table";
 import { blockcmdAddressBook, AddressBookEntry } from "@/components/blockcmd-address-book";
+import MyContractBookTable from "@/components/my-contract-book-table";
+import { ContractEntry } from "@/components/my-contract-book-table";
+
 
 export default function Page() {
   const [contractAddress, setContractAddress] = useState("");
+  const [savedContracts, setSavedContracts] = useState<ContractEntry[]>([]);
+
+  useEffect(() => {
+    {
+      get("saved_contracts").then((savedContracts: ContractEntry[]) => {
+        setSavedContracts(savedContracts || []);
+      });
+    }
+  }, [savedContracts]);
 
   function filterAddressBookForKaia(blockcmdAddressBook: AddressBookEntry[]) {
     return blockcmdAddressBook.filter((entry) => entry.network === "kaia-kairos");
@@ -78,6 +91,7 @@ export default function Page() {
             Manage my contract book <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
         </Button>
+        <MyContractBookTable savedContracts={savedContracts} />
       </div>
       <p>or</p>
       <div className="flex flex-col gap-4">
