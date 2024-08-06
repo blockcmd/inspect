@@ -7,8 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Trash2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 export default function AbiManagement() {
+  const searchParams = useSearchParams();
+  const [savedAbi, setSavedAbi] = useState("");
   const [abi, setAbi] = useState("");
   const [abiName, setAbiName] = useState("");
   const [savedABIs, setSavedABIs] = useState<string[]>([]);
@@ -19,6 +22,14 @@ export default function AbiManagement() {
       });
     }
   }, [savedABIs]);
+
+  useEffect(() => {
+    {
+      if (searchParams.get("abi")) {
+        get(searchParams.get("abi") || "").then((val) => setSavedAbi(val));
+      }
+    }
+  }, [searchParams]);
 
   function handleInputABIChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setAbi(e.target.value);
@@ -37,6 +48,15 @@ export default function AbiManagement() {
     });
   }
 
+  function prettifyABI() {
+    setSavedAbi(JSON.stringify(JSON.parse(savedAbi), null, 2));
+  }
+
+  function prettifyAndSaveABI() {
+    set(searchParams.get("abi") || "", JSON.stringify(JSON.parse(savedAbi), null, 2));
+    setSavedAbi(JSON.stringify(JSON.parse(savedAbi), null, 2));
+  }
+
   return (
     <div className="flex flex-col gap-12">
       <div className="flex flex-col gap-4">
@@ -46,21 +66,24 @@ export default function AbiManagement() {
         <div className="flex flex-row gap-4">
           <div className="flex flex-col gap-4">
             {savedABIs.map((abiName, index) => (
-              <div key={index}>
+              <Link href={`?abi=${abiName}`} key={index}>
                 <div className="flex flex-row items-center justify-between gap-4 border-2 border-primary px-4 py-2 w-[400px]">
                   {abiName}
-                  <Button size="icon" variant="destructive">
-                    <Trash2 />
-                  </Button>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
-          <Textarea
-            placeholder="paste in a contract ABI"
-            value={abi}
-            className="h-96 w-full"
-          />
+          <div className="flex flex-col gap-4 w-full">
+            <div className="flex flex-row gap-2">
+              <Button className="w-fit" onClick={prettifyABI}>Prettify</Button>
+              <Button className="w-fit" onClick={prettifyAndSaveABI}>Prettify & Save</Button>
+            </div>
+            <Textarea
+              placeholder="paste in a contract ABI"
+              value={savedAbi}
+              className="h-96 w-full"
+            />
+          </div>
         </div>
       </div>
       <div className="flex flex-col gap-4">
