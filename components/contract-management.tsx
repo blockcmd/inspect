@@ -16,12 +16,13 @@ type AbiEntry = {
   abi: string;
 };
 
-export default function AbiManagement() {
+export default function ContractManagement() {
   const searchParams = useSearchParams();
-  const [savedAbi, setSavedAbi] = useState("");
   const [abi, setAbi] = useState("");
   const [abiName, setAbiName] = useState("");
   const [savedABIs, setSavedABIs] = useState<AbiEntry[]>([]);
+
+
   useEffect(() => {
     {
       get("saved_abis").then((savedABIs: AbiEntry[]) => {
@@ -30,13 +31,6 @@ export default function AbiManagement() {
     }
   }, [savedABIs]);
 
-  useEffect(() => {
-    {
-      if (searchParams.get("abiID")) {
-        get(searchParams.get("abiID") || "").then((val) => setSavedAbi(val));
-      }
-    }
-  }, [searchParams]);
 
   function handleInputABIChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setAbi(e.target.value);
@@ -48,24 +42,26 @@ export default function AbiManagement() {
 
   function saveABI() {
     get("saved_abis").then((savedABIs: AbiEntry[]) => {
-      let savedABIsList = savedABIs || [];
+      let newSavedABIsList = savedABIs || [];
       let abiEntry: AbiEntry = {
         id: createId(),
         name: abiName,
         abi: abi
       };
-      savedABIsList.push(abiEntry);
-      set("saved_abis", savedABIsList);
+      newSavedABIsList.push(abiEntry);
+      set("saved_abis", newSavedABIsList);
     });
   }
 
-  function prettifyABI() {
-    setSavedAbi(JSON.stringify(JSON.parse(savedAbi), null, 2));
-  }
-
   function prettifyAndSaveABI() {
-    set(searchParams.get("abi") || "", JSON.stringify(JSON.parse(savedAbi), null, 2));
-    setSavedAbi(JSON.stringify(JSON.parse(savedAbi), null, 2));
+    get("saved_abis").then((savedABIs: AbiEntry[]) => {
+      let newSavedABIsList = savedABIs || [];
+      if (newSavedABIsList && newSavedABIsList.length > 0 && searchParams.get("abiID")) {
+        let currentAbiEntryindex: number = newSavedABIsList.findIndex((abiEntry: AbiEntry) => abiEntry.id === searchParams.get("abiID"));
+        newSavedABIsList[currentAbiEntryindex].abi = JSON.stringify(JSON.parse(savedABIs.find((abiEntry: AbiEntry) => abiEntry.id === searchParams.get("abiID"))?.abi || ""), null, 2);
+        set("saved_abis", newSavedABIsList);
+      }
+    });
   }
 
   return (
@@ -95,13 +91,10 @@ export default function AbiManagement() {
             )
           }
           <div className="flex flex-col gap-4 w-full">
-            <div className="flex flex-row gap-2">
-              <Button className="w-fit" onClick={prettifyABI}>Prettify</Button>
-              <Button className="w-fit" onClick={prettifyAndSaveABI}>Prettify & Save</Button>
-            </div>
+            <Button variant="secondary" className="w-fit" onClick={prettifyAndSaveABI}>Prettify & Save</Button>
             <Textarea
               placeholder="paste in a contract ABI"
-              value={savedAbi}
+              value={savedABIs.find((abiEntry: AbiEntry) => abiEntry.id === searchParams.get("abiID"))?.abi || ""}
               className="h-96 w-full"
             />
           </div>

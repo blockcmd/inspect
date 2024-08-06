@@ -6,7 +6,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import AbiManagement from "@/components/abi-management";
+import ContractManagement from "@/components/contract-management";
 
 export default function Page() {
   return (
@@ -25,7 +25,7 @@ export default function Page() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <AbiManagement />
+      <ContractManagement />
     </div>
   );
 }
