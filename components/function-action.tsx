@@ -13,29 +13,23 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { set, get } from "idb-keyval";
 import { Loader2, Check } from "lucide-react";
 
 export default function FunctionAction({
   functionObjects,
+  contract
 }: {
   functionObjects: any;
+  contract: any;
 }) {
-  const params = useParams();
   const searchParams = useSearchParams();
-  const abiName = params.abi;
   const functionName = searchParams.get("functionName");
   const functionIndex = searchParams.get("functionIndex");
-  const contractAddress = params.address;
+  const contractAddress = contract.address;
+  const contractAbi = JSON.parse(contract.abi);
   const [abi, setAbi] = useState<any>([]);
   const [result, setResult] = useState<any>("n/a");
   const [args, setArgs] = useState<any>([]);
-
-  useEffect(() => {
-    if (abiName) {
-      get(abiName).then((val) => setAbi(JSON.parse(val)));
-    }
-  }, [abiName]);
 
   useEffect(() => {
     setArgs([]);
@@ -49,7 +43,7 @@ export default function FunctionAction({
     isSuccess: readSuccess,
   } = useReadContract({
     address: contractAddress as `0x${string}`,
-    abi: abi,
+    abi: contractAbi,
     functionName: functionName,
     args: args,
   });
@@ -85,7 +79,7 @@ export default function FunctionAction({
   }
 
   return (
-    <div className="w-full border-2 p-4 rounded-md">
+    <div className="w-full border-2 border-primary p-4">
       {
         // show the functionObject at the functionIndex
         functionName ? (
@@ -104,7 +98,6 @@ export default function FunctionAction({
               functionObjects[Number(functionIndex)].inputs.length == 0 ? (
                 <div className="flex flex-col gap-4">
                   <p>No inputs required</p>
-                  <Button className="w-fit font-mono">Read</Button>
                 </div>
               ) : functionObjects[Number(functionIndex)].stateMutability ===
                   "view" &&
@@ -159,7 +152,7 @@ export default function FunctionAction({
                     onClick={() =>
                       writeContract({
                         address: contractAddress as `0x${string}`,
-                        abi: abi,
+                        abi: contractAbi,
                         functionName: functionName,
                         args: args,
                       })

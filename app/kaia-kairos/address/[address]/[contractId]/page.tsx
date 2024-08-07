@@ -16,19 +16,19 @@ import {
 import { ContractEntry } from "@/components/contract-management";
 
 
-export default function Page( { params }: { params: { address: string, abi: string } }) {
-  const [abi, setAbi] = useState("");
-
+export default function Page( { params }: { params: { address: string, contractId: string } }) {
+  const [selectedContract, setSelectedContract] = useState<ContractEntry | null>(null);
   useEffect(() => {
-    if (params.abi === "temporary-abi") {
-      get(params.abi).then((tempAbi) => setAbi(JSON.parse(tempAbi)));
+    if (params.contractId === "temporary-abi") {
+      get(params.contractId).then((tempAbi) => setSelectedContract(JSON.parse(tempAbi)));
     } else {
       get("saved_contracts").then((savedContracts) => {
-        let selectedContract = savedContracts.find((contract: ContractEntry) => (contract.id === params.abi)).abi;
-        setAbi(JSON.parse(selectedContract || ""));
+        let foundContract = savedContracts.find((contract: ContractEntry) => (contract.id === params.contractId));
+        console.log(foundContract);
+        setSelectedContract(foundContract || "");
         });
       }
-  }, [params.abi]);
+  }, [params.contractId]);
 
   return (
     <div className="flex flex-col gap-12">
@@ -49,13 +49,13 @@ export default function Page( { params }: { params: { address: string, abi: stri
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{params.abi}</BreadcrumbPage>
+            <BreadcrumbPage>{params.contractId}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex flex-col gap-8">
         <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">Functions</h2>
-        {abi && <FunctionDashboard abi={abi} />}
+        {selectedContract && <FunctionDashboard contract={selectedContract} />}
       </div>
     </div>
   );
