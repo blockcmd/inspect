@@ -2,8 +2,14 @@
 
 import FunctionAction from "./function-action"
 import FunctionList from "./function-list"
-import { ContractEntry } from "@/components/contract-management";
 
+type ContractEntry = {
+  id: string;
+  name: string;
+  abi: string;
+  network: string | undefined;
+  address: string;
+};
 
 export default function FunctionDashboard({ contract }: { contract: ContractEntry | null }) {
   
